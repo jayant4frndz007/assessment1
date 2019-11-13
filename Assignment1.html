@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+
+ #container{
+          
+            background: lightblue;
+			height:300px;
+        }
+        #drag1{
+            width:100px;
+            height:100px;
+           
+            position:relative;
+
+        }
+        .sec,.sec2,.sec3{
+            width:100px;
+            height:100px;
+            position:absolute;
+            top:20px;
+            
+			
+        }
+        .sec1{
+            z-index:10;
+        }
+		#dragelement{
+		padding:2px;
+		border-radius:50%;
+		}
+		#horizontal{
+		display:flex;
+		justify-content:space-around;
+		}
+		#geoLocation{
+		background-color:lightgray;
+		height:200px;
+		
+		}
+    </style>
+	<script>
+			function allowDrop(ev) {
+                ev.preventDefault();
+            }
+
+            function drag(ev) {
+                ev.dataTransfer.setData("text", ev.target.id);
+            }
+
+            function drop(ev) {
+                ev.preventDefault();
+                var data = ev.dataTransfer.getData("text");
+                ev.target.appendChild(document.getElementById(data));
+
+            }
+			
+			function getLocation() {
+									if (navigator.geolocation) {
+																navigator.geolocation.getCurrentPosition(showPosition);
+																} else { 
+																document.getElementById("ans").innerHTML=showResult = "Geolocation is not supported by this browser.";
+																}
+}
+
+function showPosition(position) {
+			var ans = "Latitude: " + position.coords.latitude + 
+			"<br>Longitude: " + position.coords.longitude;
+			var showResult=localStorage.getItem("geoLocation");
+			console.log(showResult);
+			document.getElementById("ans").innerHTML=showResult;
+			localStorage.setItem("geoLocation", ans);
+}
+getLocation();
+</script>
+
+</head>
+
+<body>
+<div id ="container">
+<div id="horizontal">
+    <div id="drag1">
+
+            <section class="sec2">
+            <svg width="100" height="100">
+
+                <circle id="abc" cx="50" cy="50" r="50"  fill="yellow">
+                </circle>
+            </svg>
+            </section>
+            <section id="sec1"class="sec" ondrop="drop(event)" ondragover="allowDrop(event)">
+            </section>
+
+       </div>
+	   <div id="drag1">
+				<section class="sec3">
+            <svg width="100" height="100">
+
+                <circle id="abc" cx="50" cy="50" r="50"  fill="green">
+                </circle>
+            </svg>
+            </section>
+            <section id="sec1" class="sec" ondrop="drop(event)" ondragover="allowDrop(event)">
+            </section>
+
+      
+       </div>
+	</div>
+	<center>
+       <div id="content">
+          <h3>Drag the Image and drop any of one SVG circle</h3>     
+       
+       <img id="dragelement" alt="Check Internet Connection" src="myImage.png" draggable="true" ondragstart="drag(event)" width="95" height="95"/>
+
+       </div>
+	   </center>
+	   </div>
+	   <div id="geoLocation">
+	   <h2>GEO LOCATION</h2>
+	   <p>1st time geo location won't show again either make browser refresh or close the browser and open the same browser </p>
+	   <p>Pop-up will come please allow</p>
+				<div id="ans"></div>
+	   </div>
+</body>
+</html>
